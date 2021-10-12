@@ -1,34 +1,55 @@
-const button = document.querySelector('button');
+const button = document.querySelector("button");
 
-button.addEventListener('click', ()=>{
-    if (navigator.geolocation) {
+
+button.addEventListener("click", ()=>{
+
+    if(navigator.geolocation){
+        button.innerText = "Allow to detect location";
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }else{
-        button.innerHTML = 'Your browser not support';
     }
+    
+    else{
+        button.innerText = "Your browser not support";
+    }
+    
 });
 
-function onSuccess(position) {
-    let (latitude, longitude)  = position.coords;
 
-    fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`)
+function onSuccess(position){
 
-    .then(response => response.json()).then(result =>{
-        let allDateils = result.results[0].components;
-        let {county, postcode, country} = allDateils;
-        console.log(county, postcode, country)
-    })
-  
+    button.innerText = "Detecting your location...";
+
+    let {latitude, longitude} = position.coords;
+
+    fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=9bc66ee477ba4037bf2347b1a6748da9`)
+    
+    
+    .then(response => response.json()).then(response =>{
+
+        let allDetails = response.results[0].components;
+        console.table(allDetails);
+
+        let {city, postcode, country} = allDetails;
+        button.innerText = `${city} ${postcode}, ${country}`;
+
+    }).catch(()=>{
+        button.innerText = "Something went wrong";
+    });
 }
 
-function onError(error) {
-    if (error.code == 1) {
-        button.innerHTML = 'Your denied the request';
+function onError(error){
+
+    if(error.code == 1){
+        button.innerText = "You denied the request";
     }
-    else if (error.code == 2){
-        button.innerHTML = 'Your location not available';
+
+    else if(error.code == 2){
+        button.innerText = "Location is unavailable";
     }
+
     else{
-        button.innerHTML = 'Something want wrong';
+        button.innerText = "Something went wrong";
     }
+
+    button.setAttribute("disabled", "true");
 }
