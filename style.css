@@ -1,0 +1,28 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color: #0a2351;
+}
+.container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    min-height: 100vh;
+    width: 100%;
+}
+button
+{
+    font-size: 18px;
+    padding: 20px 40px;
+    background-color: #4B9CD3;
+    color: white;
+    outline: none;
+    border:none;
+    cursor: pointer;
+    text-transform: capitalize;
+    border-radius: 10px;
+}
